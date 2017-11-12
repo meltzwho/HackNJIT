@@ -6,7 +6,7 @@ import numpy as np
 import requests
 from datetime import *
 import time
-from multiprocessing import Process, Pipe
+from multiprocessing import Process
 app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)
@@ -30,9 +30,6 @@ def arrToGraph(datDict):
     ax.plot(x,y)
 
 def selectionchanged():
-    global x
-    x = False
-    parent_conn.send(x)
     end = datetime.today()-timedelta(days=1)
     s = str(cb.currentText())
     options = {'7D':timedelta(weeks=1), '1M':timedelta(weeks=4), '3M':timedelta(weeks=12), '1Y':timedelta(weeks=52)}
@@ -44,10 +41,6 @@ def selectionchanged():
         arrToGraph(rangeRequest(startStr, endStr))
     elif s == 'ALL':
         arrToGraph(rangeRequest('2010-07-19', endStr))
-    else:
-        x = True
-        if not p.is_alive():
-            p.start()
     canvas = FigureCanvas(figure)
     layout.addWidget(canvas, 0, 0)
     w.update()
@@ -55,7 +48,7 @@ def selectionchanged():
 
 
 cb = QComboBox()
-cb.addItems(['TODAY', '7D', '1M', '3M', '1Y', 'ALL'])
+cb.addItems(['7D', '1M', '3M', '1Y', 'ALL'])
 cb.setFixedSize(75,30)
 cb.activated.connect(selectionchanged)
 

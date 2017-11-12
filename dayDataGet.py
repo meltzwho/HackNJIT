@@ -29,7 +29,7 @@ else:
     timeT = (dataNew['time']['updated'].split())[3].split(':')
     absTime = (int(timeT[0]) * 60) + int(timeT[1])
     data = {'start': absTime, 'latest': absTime, 'price': []}
-    
+
 while True:
     req = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
     dataNew = req.json()

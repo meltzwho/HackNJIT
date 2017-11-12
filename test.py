@@ -24,8 +24,10 @@ def liveGraph():
     y = data['price']
     axL.clear()
     axL.plot(x, y)
+    canvasL = FigureCanvas(figureL)
     layout.addWidget(canvasL, 0, 1)
     w.update()
+
 
 def pGraph():
     while True:
@@ -59,7 +61,7 @@ def selectionchanged():
         arrToGraph(rangeRequest('2010-07-19', endStr))
     canvas = FigureCanvas(figure)
     layout.addWidget(canvas, 0, 0)
-#    w.update()
+    w.update()
 # call funct with date range
 
 

@@ -43,6 +43,7 @@ def liveData():
         writer.write(json.dumps(data))
         writer.close()
         time.sleep(60)
+'''
 <<<<<<< HEAD
 
 =======
@@ -65,3 +66,4 @@ while True:
     writer.close()
     time.sleep(60)
 >>>>>>> fab347034a7bd9694e038664839b3e1bfc64c30c
+'''

@@ -16,6 +16,7 @@ def beginDay():
 inF = open('dayData.txt', 'r+')
 fullData = inF.read()
 data = json.loads(fullData)
+inF.close()
 
 
 ## Inside looped function

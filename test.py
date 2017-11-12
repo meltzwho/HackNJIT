@@ -7,6 +7,9 @@ import requests
 from datetime import *
 import time
 from multiprocessing import Process
+import dayDataGet
+import misc
+
 app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)

@@ -10,6 +10,7 @@ from multiprocessing import Process
 import dayDataGet
 import json
 import sys
+from threading import Thread
 
 app = QApplication([])
 w = QWidget()
@@ -22,11 +23,24 @@ def liveGraph(axL, figureL, canvasL):
     inF.close()
     x = np.linspace(0, len(data['price']), len(data['price']))
     y = data['price']
-    axL.clear()
-    axL.plot(x,y)
+    axL.plot(x, y)
     canvasL = FigureCanvas(figureL)
     layout.addWidget(canvasL, 0, 1)
     w.update()
+    return (axL, figureL, canvasL)
+
+
+def graphCon(axL, figureL, canvasL):
+    sendTup = (axL, figureL, canvasL)
+    while True:
+        sendTup = liveGraph(sendTup[0], sendTup[1], sendTup[2])
+        time.sleep(60)
+
+class refGra(Thread, sendTup):
+    def run(self):
+        while True:
+           sendTup =  liveGraph(sendTup[0], sendTup[1], sendTup[2])
+           time.sleep(60)
 
 
 
@@ -78,10 +92,16 @@ axL = figureL.gca()
 axL.clear()
 layout.addWidget(canvasL, 0, 1)
 
-liveGraph(axL, figureL, canvasL)
+#liveGraph(axL, figureL, canvasL)
+#p0 = Process(graphCon(axL, figureL, canvasL))
 p1.start()
+def run():
+    refGra(axL, figureL, canvasL).start()
+
 
 w.show()
+
+#p0.start()
 
 app.exec_()
 sys.exit()

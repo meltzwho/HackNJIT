@@ -43,4 +43,25 @@ def liveData():
         writer.write(json.dumps(data))
         writer.close()
         time.sleep(60)
+<<<<<<< HEAD
 
+=======
+else:
+    req = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+    dataNew = req.json()
+    timeT = (dataNew['time']['updated'].split())[3].split(':')
+    absTime = (int(timeT[0]) * 60) + int(timeT[1])
+    data = {'start': absTime, 'latest': absTime, 'price': []}
+
+while True:
+    req = requests.get('https://api.coindesk.com/v1/bpi/currentprice/USD.json')
+    dataNew = req.json()
+    timeT = (dataNew['time']['updated'].split())[3].split(':')
+    absTime = (int(timeT[0]) * 60) + int(timeT[1])
+    data['latest'] = absTime
+    data['price'].append(dataNew['bpi']['USD']['rate_float'])
+    writer = open('dayData.txt', 'w')
+    writer.write(json.dumps(data))
+    writer.close()
+    time.sleep(60)
+>>>>>>> fab347034a7bd9694e038664839b3e1bfc64c30c

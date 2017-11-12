@@ -15,8 +15,7 @@ app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)
 
-def liveGraph():
-<<<<<<< HEAD
+def liveGraph(axL, figureL, canvasL):
     inF = open('dayDataFloat.txt', 'r')
     fullData = inF.read()
     data = json.loads(fullData)
@@ -24,35 +23,13 @@ def liveGraph():
     x = np.linspace(0, len(data['price']), len(data['price']))
     y = data['price']
     axL.clear()
-    axL.plot(x, y)
+    axL.plot(x,y)
     canvasL = FigureCanvas(figureL)
     layout.addWidget(canvasL, 0, 1)
     w.update()
 
 
-def pGraph():
-=======
-    axL.ion()
->>>>>>> 7a55cd45fe8db83887c9d826b468cfe0c1b3b7d0
-    while True:
-        inF = open('dayDataFloat.txt', 'r')
-        fullData = inF.read()
-        data = json.loads(fullData)
-        inF.close()
-        x = np.linspace(0, len(data['price']), len(data['price']))
-        y = data['price']
-        axL.clear()
-        axL.plot(x, y)
-        axL.pause(.0001)
-        plt.show(block=False)
-        axL.pause(60)
 
-#def pGraph():
-#    while True:
-#        liveGraph()
-#        time.sleep(5)
-
-p0 = Process(target=liveGraph())
 p1 = Process(target=dayDataGet.liveData)
 def rangeRequest(startStr, endStr):
     resp = requests.get('https://api.coindesk.com/v1/bpi/historical/close.json?start='+startStr+'&end='+endStr)
@@ -88,8 +65,6 @@ cb.addItems(['7D', '1M', '3M', '1Y', 'ALL'])
 cb.setFixedSize(75,30)
 cb.activated.connect(selectionchanged)
 
-plt.ion()
-
 figure = Figure()
 canvas = FigureCanvas(figure)
 ax = figure.gca()
@@ -103,7 +78,7 @@ axL = figureL.gca()
 axL.clear()
 layout.addWidget(canvasL, 0, 1)
 
-p0.start()
+liveGraph(axL, figureL, canvasL)
 p1.start()
 
 w.show()

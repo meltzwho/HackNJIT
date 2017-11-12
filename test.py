@@ -14,6 +14,12 @@ app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)
 
+'''
+x = np.linspace(0, len(data['price']), len(data['price']))
+y = data['price']
+plt.plot(x, y)
+'''
+
 def f():
     while x:
         print(x)

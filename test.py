@@ -12,6 +12,10 @@ w = QWidget()
 layout = QGridLayout(w)
 
 '''
+inF = open('dayDataFloat.txt', 'r')
+fullData = inF.read()
+data = json.loads(fullData)
+inF.close()
 x = np.linspace(0, len(data['price']), len(data['price']))
 y = data['price']
 plt.plot(x, y)

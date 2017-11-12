@@ -8,28 +8,32 @@ from datetime import *
 import time
 from multiprocessing import Process
 import dayDataGet
-import misc
+import json
+import sys
 
 app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)
 
-'''
-inF = open('dayDataFloat.txt', 'r')
-fullData = inF.read()
-data = json.loads(fullData)
-inF.close()
-x = np.linspace(0, len(data['price']), len(data['price']))
-y = data['price']
-plt.plot(x, y)
-'''
+def liveGraph():
+    inF = open('dayDataFloat.txt', 'r')
+    fullData = inF.read()
+    data = json.loads(fullData)
+    inF.close()
+    x = np.linspace(0, len(data['price']), len(data['price']))
+    y = data['price']
+    axL.clear()
+    axL.plot(x, y)
+    layout.addWidget(canvasL, 0, 1)
+    w.update()
 
-def f():
-    while x:
-        print(x)
+def pGraph():
+    while True:
+        liveGraph()
+        time.sleep(5)
 
-p = Process(target=f)
-
+p0 = Process(target=pGraph)
+p1 = Process(target=dayDataGet.liveData)
 def rangeRequest(startStr, endStr):
     resp = requests.get('https://api.coindesk.com/v1/bpi/historical/close.json?start='+startStr+'&end='+endStr)
     dataSet = resp.json()
@@ -50,13 +54,12 @@ def selectionchanged():
     if s in options:
         delta = options[s]
         startStr = datetime.strftime((end-delta), '%Y-%m-%d')
-        print(startStr,' ', endStr)
         arrToGraph(rangeRequest(startStr, endStr))
     elif s == 'ALL':
         arrToGraph(rangeRequest('2010-07-19', endStr))
     canvas = FigureCanvas(figure)
     layout.addWidget(canvas, 0, 0)
-    w.update()
+#    w.update()
 # call funct with date range
 
 
@@ -73,11 +76,15 @@ layout.addWidget(canvas, 0, 0)
 layout.addWidget(cb, 1, 0)
 
 figureL = Figure()
-canvasL = FigureCanvas(figure)
-axL = figure.gca()
+canvasL = FigureCanvas(figureL)
+axL = figureL.gca()
 axL.clear()
 layout.addWidget(canvasL, 0, 1)
+
+p0.start()
+p1.start()
 
 w.show()
 
 app.exec_()
+sys.exit()

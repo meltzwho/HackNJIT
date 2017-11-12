@@ -59,6 +59,12 @@ ax.clear()
 layout.addWidget(canvas, 0, 0)
 layout.addWidget(cb, 1, 0)
 
+figureL = Figure()
+canvasL = FigureCanvas(figure)
+axL = figure.gca()
+axL.clear()
+layout.addWidget(canvasL, 0, 1)
+
 w.show()
 
 app.exec_()

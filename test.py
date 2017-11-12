@@ -1,11 +1,24 @@
 from PyQt4.QtGui import *
 from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
+import matplotlib as plt
+import numpy as np
+import requests
 
 app = QApplication([])
 w = QWidget()
 layout = QGridLayout(w)
 
+def rangeRequest(startStr, endStr):
+    resp = requests.get('https://api.coindesk.com/v1/bpi/historical/close.json?start='+startStr+'&end='+endStr)
+    #print(resp.)
+    dataSet = resp.json()
+    return dataSet
+
+def arrToGraph(datDict):
+    x = np.linspace(0, len(datDict['bpi']), len(datDict['bpi']))
+    y = datDict['bpi'].values()
+    plt.plot(x,y)
 
 def selectionchanged():
     print(cb.currentText())
